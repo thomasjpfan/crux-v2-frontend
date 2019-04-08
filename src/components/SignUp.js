@@ -8,7 +8,7 @@ class SignUp extends Component {
       <React.Fragment>
         <MainHeader>
           <Container>
-            <Header as='h1'>Signup</Header>
+            <Header as='h1'>SignUp</Header>
           </Container>
         </MainHeader >
         <Form>
