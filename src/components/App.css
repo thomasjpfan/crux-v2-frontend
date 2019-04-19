@@ -1,0 +1,50 @@
+.ui.nav-bar {
+  background-color: #12121212;
+}
+
+.main-header {
+  background-color: #363636;
+  margin-top: -1em;
+  padding-top: 4em;
+  padding-bottom: 4em;
+  margin-bottom: 2em;
+}
+
+.main-header .header {
+  color: white;
+}
+
+.card-description {
+  font-size: 1.1em;
+}
+
+.show-more-btn {
+  width: 100%;
+}
+
+.tags-container {
+  margin-top: -0.9em;
+  margin-bottom: -0.5em;
+}
+
+.spaced > .label, .spaced > .button {
+  margin-bottom: 0.5em;
+}
+
+.ui.fullscreen.webmodal, .ui.fullscreen.scrolling.webmodal {
+  left: auto!important;
+}
+
+.ui.create-dataset-header-button {
+  margin-left: 16px;
+}
+
+.form-tasks {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.ui.form input[type=file] {
+  margin-bottom: 10px;
+}
+

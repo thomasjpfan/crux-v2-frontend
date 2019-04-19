@@ -1,12 +1,13 @@
 import React from 'react'
 import { Menu, Container } from 'semantic-ui-react'
-import logo from '../logo.png'
+import logo from '../../logo.png'
 import {
   Link,
 } from 'react-router-dom'
-import LoginModal from './Login'
+import UserItem from './UserItem'
 
-const NavBar = () => (
+const NavBar = props => (
+
   <Menu stackable size='large' className="nav-bar">
     <Container>
       <Link to='/'>
@@ -26,12 +27,12 @@ const NavBar = () => (
           Datasets
           </Menu.Item>
       </Link>
-      <Link to='/Analyses'>
+      <Link to='/analyses'>
         <Menu.Item>
           Analyses
           </Menu.Item>
       </Link>
-      <LoginModal></LoginModal>
+      <UserItem />
     </Container>
   </Menu >
 )
