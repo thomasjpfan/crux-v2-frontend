@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Segment, Label, Modal, Button, Icon, Header, Message, List, Progress } from 'semantic-ui-react'
+import { Form, Segment, Label, Modal, Button, Icon, Header, Message, List, Progress, Divider } from 'semantic-ui-react'
 import { capitalizeFirstLetter } from './utils'
 import CategorySearch from '../views/CategorySearch'
 import AddDatasetToCrux from './AddDatasetToCrux'
@@ -342,15 +342,14 @@ class CreateDatasetNotOnFigshareForm extends Component {
           handleSelect={(result) => { this.setState({ tags: [...this.state.tags, result] }) }}
         />
         {tags.length > 0 &&
-          <List>
+          <div className='spaced tags-container '>
+            <Divider hidden />
             {tags.map(({ title }, id) => {
-              return (<List.Item key={id}>
-                <List.Content>
-                  <Label size='large' color='blue' content={`Tag: ${title}`} onRemove={this.removeTag(id)} />
-                </List.Content>
-              </List.Item>);
+              return (
+                <Label size='large' color='blue' key={id} content={`Tag: ${title}`} onRemove={this.removeTag(id)} />);
             })}
-          </List>
+            <Divider hidden />
+          </div>
         }
         <Form.Group inline>
           <label>License</label>

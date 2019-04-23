@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Segment, Modal, Button, Icon, Header, Message, List, Label, Progress } from 'semantic-ui-react'
+import { Form, Segment, Modal, Button, Icon, Header, Message, Label, Progress, Divider } from 'semantic-ui-react'
 import CategorySearch from '../views/CategorySearch'
 import AddAnalysisToCrux from './AddAnalysisToCrux'
 import { MD5Promise } from './utils'
@@ -316,15 +316,14 @@ class CreateAnalysisNotOnFigshareForm extends Component {
           handleSelect={(result) => { this.setState({ tags: [...this.state.tags, result] }) }}
         />
         {tags.length > 0 &&
-          <List>
+          <div className='spaced tags-container '>
+            <Divider hidden />
             {tags.map(({ title }, id) => {
-              return (<List.Item key={id}>
-                <List.Content>
-                  <Label size='large' color='blue' content={`Tag: ${title}`} onRemove={this.removeTag(id)} />
-                </List.Content>
-              </List.Item>);
+              return (
+                <Label size='large' color='blue' key={id} content={`Tag: ${title}`} onRemove={this.removeTag(id)} />);
             })}
-          </List>
+            <Divider hidden />
+          </div>
         }
         <input type="file" className="fileUploader" ref={this.fileInput} />
         <Button primary type='button' onClick={this.openConfirmation}>Create Analysis</Button>

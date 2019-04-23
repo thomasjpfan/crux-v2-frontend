@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Button, Modal, Header, Icon, Message, Progress, List, Label } from 'semantic-ui-react'
+import { Form, Button, Modal, Header, Icon, Message, Progress, Divider, Label } from 'semantic-ui-react'
 import AddAnalysisToCrux from './AddAnalysisToCrux';
 import { withRouter } from 'react-router-dom'
 import CategorySearch from '../views/CategorySearch'
@@ -89,15 +89,14 @@ class CreateAnalysisFromFigshareForm extends Component {
           handleSelect={(result) => { this.setState({ tags: [...this.state.tags, result] }) }}
         />
         {tags.length > 0 &&
-          <List horizontal>
+          <div className='spaced tags-container '>
+            <Divider hidden />
             {tags.map(({ title }, id) => {
-              return (<List.Item key={id}>
-                <List.Content>
-                  <Label size='large' color='blue' content={`Tag: ${title}`} onRemove={this.removeTag(id)} />
-                </List.Content>
-              </List.Item>);
+              return (
+                <Label size='large' color='blue' key={id} content={`Tag: ${title}`} onRemove={this.removeTag(id)} />);
             })}
-          </List>
+            <Divider hidden />
+          </div>
         }
         {
           taskOptions.length > 0 && (

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Button, Label, Modal, Header, Icon, Progress, Message, List } from 'semantic-ui-react'
+import { Form, Button, Label, Modal, Header, Icon, Progress, Message, List, Divider } from 'semantic-ui-react'
 import AddDatasetToCrux from './AddDatasetToCrux'
 import { withRouter } from 'react-router-dom'
 import { capitalizeFirstLetter } from './utils'
@@ -122,15 +122,14 @@ class CreateDatasetFromFigshareForm extends Component {
           handleSelect={(result) => { this.setState({ tags: [...this.state.tags, result] }) }}
         />
         {tags.length > 0 &&
-          <List>
+          <div className='spaced tags-container '>
+            <Divider hidden />
             {tags.map(({ title }, id) => {
-              return (<List.Item key={id}>
-                <List.Content>
-                  <Label size='large' color='blue' content={`Tag: ${title}`} onRemove={this.removeTag(id)} />
-                </List.Content>
-              </List.Item>);
+              return (
+                <Label size='large' color='blue' key={id} content={`Tag: ${title}`} onRemove={this.removeTag(id)} />);
             })}
-          </List>
+            <Divider hidden />
+          </div>
         }
         <Form.Input label='Tasks' onKeyDown={this.addTaskKeyDown} error={errorFormLabel === 'tasks'} />
         {tasks.length > 0 &&
