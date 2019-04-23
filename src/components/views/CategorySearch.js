@@ -18,13 +18,16 @@ class CategorySearch extends Component {
   }
 
   handleSearchChange = (e, { value }) => {
+    const currentItems = this.props.currentItems || []
+    const currentIDs = currentItems.map(({ id }) => id)
+
     this.setState({ isLoading: true, value })
 
     setTimeout(() => {
       if (this.state.value.length < 1) return this.resetComponent()
 
       const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      const isMatch = result => re.test(result.title)
+      const isMatch = result => (re.test(result.title) && !currentIDs.includes(result.id))
 
       this.setState({
         isLoading: false,

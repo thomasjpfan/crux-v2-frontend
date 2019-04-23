@@ -120,6 +120,7 @@ class CreateDatasetFromFigshareForm extends Component {
           === 'description'} />
         <CategorySearch
           handleSelect={(result) => { this.setState({ tags: [...this.state.tags, result] }) }}
+          currentItems={tags}
         />
         {tags.length > 0 &&
           <div className='spaced tags-container '>

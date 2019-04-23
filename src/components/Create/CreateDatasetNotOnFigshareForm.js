@@ -340,6 +340,7 @@ class CreateDatasetNotOnFigshareForm extends Component {
         <Form.TextArea label='Description' placeholder='Description' onChange={(e, { value }) => this.setState({ description: value })} error={formErrorLabel === 'description'} value={description} />
         <CategorySearch
           handleSelect={(result) => { this.setState({ tags: [...this.state.tags, result] }) }}
+          currentItems={tags}
         />
         {tags.length > 0 &&
           <div className='spaced tags-container '>

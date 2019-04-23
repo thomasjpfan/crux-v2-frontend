@@ -87,6 +87,7 @@ class CreateAnalysisFromFigshareForm extends Component {
         <Form.TextArea label='Description' value={description} onChange={(e, { value }) => this.setState({ description: value })} rows={10} error={errorFormLabel === 'description'} />
         <CategorySearch
           handleSelect={(result) => { this.setState({ tags: [...this.state.tags, result] }) }}
+          currentItems={tags}
         />
         {tags.length > 0 &&
           <div className='spaced tags-container '>
