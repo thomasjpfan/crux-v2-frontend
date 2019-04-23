@@ -1,15 +1,20 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Button, Segment, Message, Header } from 'semantic-ui-react'
-import FigshareAxios from '../../FigshareAxios'
-import CreateDatasetOnFigshareForm from './CreateDatasetOnFigshareForm'
+import CreateDatasetFromFigshareForm from './CreateDatasetFromFigshareForm'
+import ModalWebViewer from '../views/ModalWebViewer'
 
-class CreateDatasetOnFigshare extends Component {
+class CreateDatasetFromFigshare extends Component {
   state = {
-    figshareURL: "https://figshare.com/articles/Activated_Carbon-Loaded_Polydimethylsiloxane_Membranes_for_the_Pervaporation_of_1-Butanol_from_Aqueous_Solutions/7482851",
+    figshareURL: "",
     figshareURLFormLoading: false,
     figshareURLFormErrorMsg: "",
-    figshareURLResponse: null
+    figshareURLResponse: null,
+    title: null,
+    figshareID: null,
+    tags: null,
+    description: null,
   }
+
 
   loadDataFromFigshare = (e) => {
     e.preventDefault();
@@ -25,12 +30,23 @@ class CreateDatasetOnFigshare extends Component {
     const url = new URL(figshareURL)
     const urlPathnameSpllit = url.pathname.split("/")
     const figshareID = urlPathnameSpllit[urlPathnameSpllit.length - 1]
-    const getFigshareInfoURL = `/articles/${figshareID}`
+    const getFigshareInfoURL = `https://api.figshare.com/v2/articles/${figshareID}`
 
     this.setState({ figshareURLFormLoading: true })
-    FigshareAxios.get(getFigshareInfoURL)
-      .then((r) => {
-        this.setState({ figshareURLResponse: r.data, figshareURLFormLoading: false })
+
+    fetch(getFigshareInfoURL)
+      .then(response => response.json())
+      .then((data) => {
+        const { id, title, categories, description } = data
+        const tags = categories.map(({ id, title }) => ({ id, title }))
+        const parsedDescription = description.replace(/(<([^>]+)>)/ig, "")
+        this.setState({
+          description: parsedDescription,
+          figshareURLFormLoading: false,
+          tags: tags,
+          figshareID: id,
+          title: title,
+        })
       })
       .catch((e) => {
         this.setState({ figshareURLFormErrorMsg: "Unable to get information from FigShare. Please confirm the url is correct" })
@@ -41,24 +57,28 @@ class CreateDatasetOnFigshare extends Component {
   }
 
   render() {
-    const { figshareURLFormLoading, figshareURLFormErrorMsg, figshareURL, figshareURLResponse } = this.state
-
+    const { figshareURLFormLoading, figshareURLFormErrorMsg, figshareURL, figshareID, tags, title, description } = this.state
     const figshareURLFormHasError = figshareURLFormErrorMsg !== ""
 
     var createDatasetForm
-    if (figshareURLResponse) {
-      const tags = figshareURLResponse.categories.map(({ id }) => id)
-
-      createDatasetForm = (<Segment>
-        <Header as='h2' content='Add Dataset from FigShare' />
-        <CreateDatasetOnFigshareForm
-          name={figshareURLResponse.title}
-          defaultDescription={figshareURLResponse.description.replace(/(<([^>]+)>)/ig, "")}
-          defaultTags={tags}
-          figshareID={figshareURLResponse.id}
-          formLoading={figshareURLFormLoading}
-          setFormLoading={(v) => this.setState({ figshareURLFormLoading: v })}
-        /></Segment>)
+    if (figshareID) {
+      createDatasetForm = (<Fragment>
+        <Segment>
+          <Header as='h2' content='Add Dataset from FigShare' />
+          <ModalWebViewer
+            buttonProps={{ secondary: true, content: 'View Data' }}
+            title={title}
+            iframeSrc={`https://widgets.figshare.com/articles/${figshareID}/embed`}
+          />
+        </Segment>
+        <Segment>
+          <CreateDatasetFromFigshareForm
+            name={title}
+            description={description}
+            tags={tags}
+            figshareID={figshareID}
+            key={figshareID}
+          /></Segment></Fragment>)
     }
 
     return (
@@ -83,4 +103,4 @@ class CreateDatasetOnFigshare extends Component {
   }
 }
 
-export default CreateDatasetOnFigshare;
+export default CreateDatasetFromFigshare;

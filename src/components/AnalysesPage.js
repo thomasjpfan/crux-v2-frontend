@@ -4,7 +4,7 @@ import {
 } from 'semantic-ui-react'
 import MainHeader from './views/MainHeader'
 import SearchableAnalysesCardList from './CardList/SearchableAnalysesCardList'
-import MyAnalysesCardList from './CardList/MyAnalysesCardList'
+import SearchableMyAnalysisCardList from './CardList/SearchableMyAnalysisCardList'
 
 
 class AnalysesPage extends Component {
@@ -21,7 +21,7 @@ class AnalysesPage extends Component {
   render() {
     let mainDisplay
     if (this.state.tabIndex === 1) {
-      mainDisplay = (<MyAnalysesCardList />)
+      mainDisplay = (<SearchableMyAnalysisCardList />)
     } else {
       mainDisplay = (<SearchableAnalysesCardList />)
     }

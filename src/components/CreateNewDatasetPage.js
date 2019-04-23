@@ -4,7 +4,7 @@ import { Container, Segment } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import NotLoggedInMessage from './views/NotLoggedInMessage'
 import AlreadyOnFigshare from './Create/AlreadyOnFigshare'
-import CreateDatasetOnFigshare from './Create/CreateDatasetOnFigshare'
+import CreateDatasetFromFigshare from './Create/CreateDatasetFromFigshare'
 import CreateDatasetNotOnFigshareForm from './Create/CreateDatasetNotOnFigshareForm';
 
 class CreateNewDatasetPage extends Component {
@@ -35,7 +35,7 @@ class CreateNewDatasetPage extends Component {
               onNo={() => this.setState({ alreadyOnFigshare: false })}
               onYes={() => this.setState({ alreadyOnFigshare: true })} />
             {alreadyOnFigshare ? (
-              <CreateDatasetOnFigshare />
+              <CreateDatasetFromFigshare />
             ) : (<CreateDatasetNotOnFigshareForm />)}
           </Segment.Group>
         </Container>

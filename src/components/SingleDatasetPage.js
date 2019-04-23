@@ -3,45 +3,16 @@ import { Query } from 'react-apollo'
 import { Loader, Message, Container } from 'semantic-ui-react'
 import SingleDatasetDisplay from './views/SingleDatasetDisplay'
 import gql from 'graphql-tag'
+import { DATASET_FRAGMENT } from './fragments'
 
 const GET_SINGLE_DATASET = gql`
   query dataset($id: ID!){
     dataset(id: $id) {
-      id
-      name
-      figshareId
-      description
-      link
-      analysisSet {
-        edges {
-          node {
-            id
-            name
-            task {
-              id
-              name
-            }
-          }
-        }
-      }
-      taskSet {
-        edges {
-          node {
-            id
-            name
-          }
-        }
-      }
-      tags {
-        edges {
-        node {
-          id
-          name
-        }
-        }
-      }
+      ...datasetNode
     }
   }
+
+  ${DATASET_FRAGMENT}
 `
 
 

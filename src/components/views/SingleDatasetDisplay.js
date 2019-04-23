@@ -54,11 +54,12 @@ const SingleDatasetDisplay = props => {
           <Card.Group itemsPerRow={2} stackable>
             {
               analyses.map(({ node: { id, name, task } }) => (
-                <Card key={id} color='blue'>
+                <Card key={id}>
                   <Card.Content>
                     <Link to={`/analysis/${id}`}>
                       <Header as='h3'>{name}</Header>
-                      {task && <Label size='large'>Task: {task.name}</Label>}
+                      {task ? (<Label size='large'>Task: {task.name}</Label>) :
+                        (<Label size='large'>Task: Unspecified</Label>)}
                     </Link>
                   </Card.Content>
                 </Card>

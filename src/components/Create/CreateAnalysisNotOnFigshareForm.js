@@ -1,28 +1,24 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Segment, Label, Modal, Button, Icon, Header, Message, List, Progress } from 'semantic-ui-react'
-import { capitalizeFirstLetter } from './utils'
+import { Form, Segment, Modal, Button, Icon, Header, Message, List, Label, Progress } from 'semantic-ui-react'
 import CategorySearch from '../views/CategorySearch'
-import AddDatasetToCrux from './AddDatasetToCrux'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import AddAnalysisToCrux from './AddAnalysisToCrux'
 import { MD5Promise } from './utils'
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 
-class CreateDatasetNotOnFigshareForm extends Component {
+class CreateAnalysisNotOnFigshareForm extends Component {
   fileInput = React.createRef()
 
   state = {
-    title: 'hello world',
-    licenseValue: 1,
-    description: 'this is cool',
-    tasks: ['do something cool'],
-    tags: [{ id: 1, title: "Biophysics" }],
+    title: '',
+    description: '',
+    tags: this.props.defaultTags,
 
+    modalOpen: 'NONE',
 
     createStatus: '',
     createErrorMessage: '',
     createProgress: 0,
-
-    modalOpen: 'NONE',
 
     formErrorMessage: '',
     formErrorLabel: '',
@@ -30,32 +26,8 @@ class CreateDatasetNotOnFigshareForm extends Component {
     newFigshareID: '',
     newFileHash: '',
     newUploadURL: '',
-    newPrivateURL: '',
-    newFileID: '',
 
     uploadToFigshareSucess: false,
-  }
-
-  addTaskKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      if (e.target.value.length === 0) {
-        return
-      }
-      this.setState({
-        tasks: [...this.state.tasks, capitalizeFirstLetter(e.target.value)],
-      })
-      e.target.value = ''
-    }
-  }
-
-  removeTask = (id) => (e) => {
-    this.setState({
-      tasks: [
-        ...this.state.tasks.slice(0, id),
-        ...this.state.tasks.slice(id + 1, this.state.tasks.length)
-      ]
-    })
   }
 
   removeTag = (id) => (e) => {
@@ -68,6 +40,7 @@ class CreateDatasetNotOnFigshareForm extends Component {
   }
 
   openConfirmation = () => {
+    // validate form
     if (this.state.title === '') {
       this.setState({
         formErrorMessage: 'Please add a title',
@@ -89,13 +62,6 @@ class CreateDatasetNotOnFigshareForm extends Component {
       })
       return
     }
-    if (this.state.tasks.length === 0) {
-      this.setState({
-        formErrorMessage: 'Please add a task',
-        formErrorLabel: 'tasks'
-      })
-      return
-    }
     if (this.fileInput.current.files.length === 0) {
       this.setState({
         formErrorMessage: 'Please choose a file',
@@ -110,10 +76,11 @@ class CreateDatasetNotOnFigshareForm extends Component {
     })
   }
 
-  createDatasetOnFigshare = (e) => {
+  createAnalysisOnFigshare = (e) => {
+    // create dataset on figshare
     this.setState({
       modalOpen: 'CREATE',
-      createStatus: 'Creating dataset...',
+      createStatus: 'Creating analysis...',
       createProgress: 10,
       newFileHash: '',
       newFigshareID: '',
@@ -124,7 +91,6 @@ class CreateDatasetNotOnFigshareForm extends Component {
     const {
       title,
       description,
-      licenseValue,
       tags,
     } = this.state
 
@@ -147,8 +113,8 @@ class CreateDatasetNotOnFigshareForm extends Component {
               title: title,
               description: description,
               keywords: keywords,
-              license: licenseValue,
-              defined_type: 'dataset',
+              license: 3,
+              defined_type: 'code',
               categories: tagIds
             }),
             headers: authHeader
@@ -165,7 +131,7 @@ class CreateDatasetNotOnFigshareForm extends Component {
 
         const { newFileHash } = this.state
         return fetch(
-          `https://api.figshare.com/v2/account/articles/${newFigshareID}/files`,
+          `https://api.figshare.com/v2//account/articles/${newFigshareID}/files`,
           {
             method: "POST",
             body: JSON.stringify({
@@ -252,7 +218,7 @@ class CreateDatasetNotOnFigshareForm extends Component {
       })
   }
 
-  updateCruxWithDataset = (createDatasetOnCrux) => () => {
+  updateCruxWithAnalysis = (createAnalysisOnCrux) => () => {
     const figshareToken = this.props.figshareToken
     const { newFigshareID } = this.state
     const authHeader = new Headers({ 'Authorization': `token ${figshareToken}` })
@@ -267,18 +233,18 @@ class CreateDatasetNotOnFigshareForm extends Component {
       })
       .then(() => {
         this.setState({ createProgress: 80 })
-        return createDatasetOnCrux()
+        return createAnalysisOnCrux()
       })
-      .then(({ data: { createDataset: { dataset: { id } } } }) => {
+      .then(({ data: { createAnalysis: { analysis: { id } } } }) => {
         this.setState({
           modalOpen: 'NONE',
         })
-        this.props.history.push(`/dataset/${id}`)
+        this.props.history.push(`/analysis/${id}`)
       })
       .catch((e) => {
         this.resetState()
         this.setState({
-          formErrorMessage: 'Unable to create dataset'
+          formErrorMessage: 'Unable to create analysis'
         })
       })
   }
@@ -332,12 +298,20 @@ class CreateDatasetNotOnFigshareForm extends Component {
   }
 
   render() {
-    const { licenseValue, tasks, formErrorMessage, title, tags, formErrorLabel, description, createStatus, createProgress, createErrorMessage, newFigshareID, uploadToFigshareSucess, modalOpen } = this.state
+    const { title, description, tags, newFigshareID, formErrorMessage, formErrorLabel, modalOpen, createStatus, createErrorMessage, createProgress, uploadToFigshareSucess } = this.state
+    const { dataset, task } = this.props
+
+    let taskID
+    if (task) {
+      taskID = task.id
+    } else {
+      taskID = ''
+    }
 
     return (<Segment>
       <Form size='large' error={formErrorMessage !== ""}>
-        <Form.Input label='Title' placeholder="Crux's Next Top Dataset" onChange={(e, { value }) => this.setState({ title: value })} value={title} error={formErrorLabel === 'title'} />
-        <Form.TextArea label='Description' placeholder='Description' onChange={(e, { value }) => this.setState({ description: value })} error={formErrorLabel === 'description'} value={description} />
+        <Form.Input label='Title' placeholder="Crux's Next Top Analysis" onChange={(e, { value }) => this.setState({ title: value })} error={formErrorLabel === 'title'} value={title} />
+        <Form.TextArea label='Description' placeholder='Tell me more' onChange={(e, { value }) => this.setState({ description: value })} error={formErrorLabel === 'description'} value={description} />
         <CategorySearch
           handleSelect={(result) => { this.setState({ tags: [...this.state.tags, result] }) }}
         />
@@ -352,38 +326,11 @@ class CreateDatasetNotOnFigshareForm extends Component {
             })}
           </List>
         }
-        <Form.Group inline>
-          <label>License</label>
-          <Form.Radio
-            label='CC BY 4.0'
-            value={1}
-            checked={licenseValue === 1}
-            onChange={() => this.setState({ licenseValue: 1 })}
-          />
-          <Form.Radio
-            label='Apache 2.0'
-            value={7}
-            checked={licenseValue === 7}
-            onChange={() => this.setState({ licenseValue: 7 })}
-          />
-        </Form.Group>
-        <Form.Input label='Tasks' onKeyDown={this.addTaskKeyDown} error={formErrorLabel === 'tasks'} />
-        {tasks.length > 0 &&
-          <List>
-            {tasks.map((name, id) => (
-              <List.Item key={id}>
-                <List.Content >
-                  <Label size='large' color='blue' content={`Task: ${name}`} onRemove={this.removeTask(id)} />
-                </List.Content>
-              </List.Item>
-            ))}
-          </List>
-        }
         <input type="file" className="fileUploader" ref={this.fileInput} />
-        <Form.Button primary onClick={this.openConfirmation}>Create Dataset</Form.Button>
+        <Button primary type='button' onClick={this.openConfirmation}>Create Analysis</Button>
         <Message
           error
-          header='Unable to Upload Dataset'
+          header='Unable to Upload Analysis'
           content={formErrorMessage}
         />
       </Form>
@@ -391,12 +338,13 @@ class CreateDatasetNotOnFigshareForm extends Component {
         open={modalOpen === 'CONFIRM CREATE'}
         onClose={() => this.setState({ modalOpen: 'NONE' })}
         size='large' >
-        <Header content='Are you sure you want to create this dataset?' />
+        <Header content='Are you sure you want to create this Analysis?' />
         <Modal.Actions>
           <Button color='red' onClick={() => this.setState({ modalOpen: 'NONE' })}>
             <Icon name='remove' />No
             </Button>
-          <Button color='green' onClick={this.createDatasetOnFigshare}>
+
+          <Button color='green' onClick={this.createAnalysisOnFigshare}>
             <Icon name='checkmark' />Yes</Button>
         </Modal.Actions>
       </Modal>
@@ -420,25 +368,28 @@ class CreateDatasetNotOnFigshareForm extends Component {
         </Modal.Content>
         {
           uploadToFigshareSucess &&
-          <Modal.Actions>
-            <Message size='large' header='Finished data upload to figshare' color='green' />
-            <Button color='red' onClick={() => this.cancelUpload(() => { })} content='Cancel and try again' />
-            <Button color='black' onClick={this.viewData} content='Preview Data' />
-            <AddDatasetToCrux
-              name={title}
-              description={description}
-              tags={tags.map(({ title }) => title)}
-              tasks={tasks}
-              figshareID={newFigshareID}
-            >
-              {(createDatasetOnCrux) => (
-                <Button primary onClick={this.updateCruxWithDataset(createDatasetOnCrux)} content='Finish uploading' />
-              )}
-            </AddDatasetToCrux>
-          </Modal.Actions>
+          <Fragment>
+            <Modal.Actions>
+              <Message size='large' header='Finished data upload to figshare' color='green' />
+              <Button color='red' onClick={() => this.cancelUpload(() => { })} content='Cancel and try again' />
+              <Button color='black' onClick={this.viewData} content='Preview Analysis' />
+              <AddAnalysisToCrux
+                name={title}
+                description={description}
+                tags={tags.map(({ title }) => title)}
+                figshareID={newFigshareID}
+                taskID={taskID}
+                datasetID={dataset.id}
+              >
+                {(createAnalysisOnCrux) => (
+                  <Button primary onClick={this.updateCruxWithAnalysis(createAnalysisOnCrux)} content='Finish uploading' />
+                )}
+              </AddAnalysisToCrux>
+            </Modal.Actions>
+          </Fragment>
         }
       </Modal>
-    </Segment >)
+    </Segment>)
   }
 }
 
@@ -448,4 +399,4 @@ const mapStateToProps = ({ user }) => (
   }
 )
 
-export default withRouter(connect(mapStateToProps)(CreateDatasetNotOnFigshareForm))
+export default withRouter(connect(mapStateToProps)(CreateAnalysisNotOnFigshareForm))

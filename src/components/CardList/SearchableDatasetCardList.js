@@ -4,9 +4,9 @@ import { Input, Divider } from 'semantic-ui-react'
 import DatasetsCardList from './DatasetsCardList'
 import gql from 'graphql-tag'
 
-const GET_ALL_DATASETS = gql`
-  query datasets($after: String, $first: Int, $name: String){
-    datasets(after: $after, first: $first, name_Icontains: $name) {
+const GET_DATASETS = gql`
+  query datasets($after: String, $name: String){
+    datasets(after: $after, first: 10, name_Icontains: $name) {
       pageInfo {
         endCursor
         hasNextPage
@@ -46,13 +46,15 @@ class SearchableDatasetCardList extends Component {
   }
 
   render() {
+    console.log(this.state.searchQuery)
     return (<Fragment>
       <Input icon='search' iconPosition='left' placeholder='Search for title...' fluid onChange={this.changeQuery} loading={this.state.loading} />
       <Divider hidden />
-      <DatasetsCardList query={GET_ALL_DATASETS} additionalVariables={{ name: this.state.searchQuery }} cardsPerPage={5} />
+      <DatasetsCardList query={GET_DATASETS} additionalVariables={{ name: this.state.searchQuery }} />
     </Fragment >)
 
   }
 }
 
+export { GET_DATASETS }
 export default SearchableDatasetCardList

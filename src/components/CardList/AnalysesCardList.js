@@ -6,7 +6,7 @@ import CardList from '../views/CardList'
 
 const AnalysesCardList = props => {
   return (<Fragment>
-    <Query query={props.query} variables={{ first: props.cardsPerPage, ...props.additionalVariables }}>
+    <Query query={props.query} variables={{ ...props.additionalVariables }}>
       {({ data, loading, error, fetchMore }) => {
         if (loading) {
           return <Loader active inline='centered' />
@@ -33,7 +33,6 @@ const AnalysesCardList = props => {
             fetchMore({
               variables: {
                 after: analyses.pageInfo.endCursor,
-                first: props.cardsPerPage,
                 ...props.additionalVariables
               },
               updateQuery: (previousResult, { fetchMoreResult }) => {

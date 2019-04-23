@@ -7,9 +7,9 @@ import { connect } from 'react-redux'
 import NotLoggedInMessage from '../views/NotLoggedInMessage'
 
 
-const GET_ALL_USER_DATASETS = gql`
-  query datasets($after: String, $first: Int, $username: String!, $name: String){
-    datasets(after: $after, first: $first, createdBy_Username: $username, name_Icontains: $name) {
+const GET_USER_DATASETS = gql`
+  query datasets($after: String, $createdBy: ID, $name: String){
+    datasets(after: $after, first: 10, createdBy: $createdBy, name_Icontains: $name) {
       pageInfo {
         endCursor
         hasNextPage
@@ -56,7 +56,7 @@ class SearchableMyDatasetCardList extends Component {
     return (<Fragment>
       <Input icon='search' iconPosition='left' placeholder='Search for title...' fluid onChange={this.changeQuery} loading={this.state.loading} />
       <Divider hidden />
-      <DatasetsCardList query={GET_ALL_USER_DATASETS} additionalVariables={{ username: this.props.username, name: this.state.searchQuery }} cardsPerPage={5} />
+      <DatasetsCardList query={GET_USER_DATASETS} additionalVariables={{ createdBy: this.props.cruxUID, name: this.state.searchQuery }} />
     </Fragment >)
 
   }
@@ -65,8 +65,9 @@ class SearchableMyDatasetCardList extends Component {
 const mapStateToProps = ({ user }) => (
   {
     loggedIn: user.loggedIn,
-    username: user.username,
+    cruxUID: user.cruxUID,
   }
 )
 
+export { GET_USER_DATASETS }
 export default connect(mapStateToProps)(SearchableMyDatasetCardList)

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Button, Divider } from 'semantic-ui-react'
-import MyAnalysesCardList from '../CardList/MyAnalysesCardList'
+import SearchableMyAnalysisCardList from '../CardList/SearchableMyAnalysisCardList'
 import SearchableMyDatasetCardList from '../CardList/SearchableMyDatasetCardList'
 
 
@@ -20,7 +20,7 @@ class DashboardDisplay extends Component {
     if (this.state.tabIndex === 0) {
       mainDisplay = (<SearchableMyDatasetCardList />)
     } else {
-      mainDisplay = (<MyAnalysesCardList />)
+      mainDisplay = (<SearchableMyAnalysisCardList />)
     }
     return (
       <Fragment>

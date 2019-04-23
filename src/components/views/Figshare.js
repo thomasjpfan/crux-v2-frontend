@@ -9,11 +9,14 @@ import { loginAction } from '../../redux/user'
 
 const CRUX_LOGIN = gql`
   mutation socialAuth($accessToken: String!) {
-    socialAuth(provider: "figshare", accessToken: $accessToken) {
-      token
-      user {
-        username
+    socialAuth(input:{provider: "figshare", accessToken: $accessToken}){
+      social {
+        user {
+          id
+          username
+        }
       }
+      token
     }
   }
 `
@@ -35,8 +38,9 @@ const Figshare = props => {
       accessToken: access_token,
     }
   }).then(({ data }) => {
-    const { token, user: { username } } = data.socialAuth
-    props.onLogin(access_token, token, username)
+    const { social, token } = data.socialAuth
+    const { id, username } = social.user
+    props.onLogin(access_token, token, username, id)
   })
 
   return <Redirect to="/dashboard" />
@@ -44,8 +48,8 @@ const Figshare = props => {
 
 const mapDispatchToProps = (dispatch) => (
   {
-    onLogin: (figshare_token, crux_token, username) => (
-      dispatch(loginAction(figshare_token, crux_token, username))
+    onLogin: (figshare_token, crux_token, username, cruxUID) => (
+      dispatch(loginAction(figshare_token, crux_token, username, cruxUID))
     ),
   }
 )

@@ -3,15 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter as Router } from "react-router-dom";
 import { ApolloProvider } from 'react-apollo';
-import ApolloClient from 'apollo-boost';
 import App from './components/App';
-import { GRAPHQL_URI } from './Config';
 import { Provider } from 'react-redux';
 import store from './redux/redux';
-
-const client = new ApolloClient({
-  uri: GRAPHQL_URI,
-})
+import client from './ApolloClient';
 
 ReactDOM.render(
   <Provider store={store}>

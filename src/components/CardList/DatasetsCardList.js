@@ -5,7 +5,7 @@ import CardList from '../views/CardList'
 
 const DatasetsCardList = props => {
   return (<Fragment>
-    <Query query={props.query} variables={{ first: props.cardsPerPage, ...props.additionalVariables }}>
+    <Query query={props.query} variables={{ ...props.additionalVariables }}>
       {({ data, loading, error, fetchMore }) => {
         if (loading) {
           return <Loader active inline='centered' />
@@ -31,7 +31,6 @@ const DatasetsCardList = props => {
             fetchMore({
               variables: {
                 after: datasets.pageInfo.endCursor,
-                first: props.cardsPerPage,
                 ...props.additionalVariables
               },
               updateQuery: (previousResult, { fetchMoreResult }) => {

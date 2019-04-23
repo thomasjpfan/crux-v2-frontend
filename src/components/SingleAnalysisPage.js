@@ -3,34 +3,15 @@ import { Query } from 'react-apollo'
 import { Loader, Message, Container } from 'semantic-ui-react'
 import SingleAnalysisDisplay from './views/SingleAnalysisDisplay'
 import gql from 'graphql-tag'
+import { ANALYSIS_FRAGMENT } from './fragments'
 
 const GET_SINGLE_ANALYSIS = gql`
-  query analysis($id: ID!){
-    analysis(id:$id) {
-    id
-    name
-    description
-    figshareId
-    task {
-      id
-      name
-    }
-    dataset {
-      id
-      name
-      figshareId
-      description
-      tags {
-        edges {
-          node {
-            id
-            name
-          }
-        }
-      }
-    }
+query analysis($id: ID!){
+  analysis(id:$id) {
+    ...analysisNode
   }
 }
+${ANALYSIS_FRAGMENT}
 `
 
 const SingleAnalysisPage = props => {

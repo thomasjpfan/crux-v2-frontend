@@ -1,3 +1,4 @@
+import { debounce } from "throttle-debounce"
 import React, { Component, Fragment } from 'react'
 import { Input, Divider } from 'semantic-ui-react'
 import AnalysesCardList from './AnalysesCardList'
@@ -6,8 +7,8 @@ import { connect } from 'react-redux'
 import NotLoggedInMessage from '../views/NotLoggedInMessage'
 
 const GET_USER_ANALYSES = gql`
-  query analyses($after: String, $first: Int, $name: String, $username: String){
-    analyses(after: $after, first: $first, name_Icontains: $name, createdBy_Username: $username) {
+  query analyses($after: String, $name: String, $createdBy: ID){
+    analyses(after: $after, first: 10, name_Icontains: $name, createdBy: $createdBy) {
       pageInfo {
         endCursor
         hasNextPage
@@ -46,25 +47,24 @@ class SearchableMyAnalysesCardList extends Component {
     })
   }
 
-
   render() {
     if (!this.props.loggedIn) {
       return <NotLoggedInMessage />
     }
     return (<Fragment>
-      <Input icon='search' iconPosition='left' placeholder='Search for title...' fluid onChange={this.onChange} />
+      <Input icon='search' iconPosition='left' placeholder='Search for title...' fluid onChange={this.changeQuery} loading={this.state.loading} />
       <Divider hidden />
-      <AnalysesCardList query={GET_USER_ANALYSES} additionalVariables={{ name: this.state.query, username:  }} cardsPerPage={5} />
+      <AnalysesCardList query={GET_USER_ANALYSES} additionalVariables={{ name: this.state.searchQuery, createdBy: this.props.cruxUID }} />
     </Fragment >)
-
   }
 }
 
 const mapStateToProps = ({ user }) => (
   {
     loggedIn: user.loggedIn,
-    username: user.username,
+    cruxUID: user.cruxUID,
   }
 )
 
+export { GET_USER_ANALYSES }
 export default connect(mapStateToProps)(SearchableMyAnalysesCardList)
