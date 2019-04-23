@@ -9,7 +9,7 @@ let FIGSHARE_REDIRECT_URI
 let FIGHSARE_CLIENT_ID
 if (process.env.NODE_ENV === 'production') {
   GRAPHQL_URI = 'https://crux-v2-be.herokuapp.com/graphql'
-  FIGSHARE_REDIRECT_URI = 'https://necrux.netlify.com/oauth/figshare'
+  FIGSHARE_REDIRECT_URI = 'https://necrux.netlify.com/index.html/oauth/figshare'
   FIGHSARE_CLIENT_ID = '95bcd514ad63b7f7388c8d9d5d2a9822fbbbfb67'
 } else {
   GRAPHQL_URI = 'http://localhost:8000/graphql'
