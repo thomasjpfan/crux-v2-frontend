@@ -367,13 +367,13 @@ class CreateDatasetNotOnFigshareForm extends Component {
             onChange={() => this.setState({ licenseValue: 7 })}
           />
         </Form.Group>
-        <Form.Input label='Tasks' onKeyDown={this.addTaskKeyDown} error={formErrorLabel === 'tasks'} />
+        <Form.Input label='Tasks (Press enter to add)' onKeyDown={this.addTaskKeyDown} error={formErrorLabel === 'tasks'} />
         {tasks.length > 0 &&
           <List>
             {tasks.map((name, id) => (
               <List.Item key={id}>
                 <List.Content >
-                  <Label size='large' color='blue' content={`Task: ${name}`} onRemove={this.removeTask(id)} />
+                  <Label size='large' content={`Task: ${name}`} onRemove={this.removeTask(id)} />
                 </List.Content>
               </List.Item>
             ))}

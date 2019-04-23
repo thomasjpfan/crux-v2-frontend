@@ -132,13 +132,13 @@ class CreateDatasetFromFigshareForm extends Component {
             <Divider hidden />
           </div>
         }
-        <Form.Input label='Tasks' onKeyDown={this.addTaskKeyDown} error={errorFormLabel === 'tasks'} />
+        <Form.Input label='Tasks (Press enter to add)' onKeyDown={this.addTaskKeyDown} error={errorFormLabel === 'tasks'} />
         {tasks.length > 0 &&
           <List>
             {tasks.map((name, id) => (
               <List.Item key={id}>
                 <List.Content >
-                  <Label size='large' color='blue' content={`Task: ${name}`} onRemove={this.removeTask(id)} />
+                  <Label size='large' content={`Task: ${name}`} onRemove={this.removeTask(id)} />
                 </List.Content>
               </List.Item>
             ))}
