@@ -1,8 +1,7 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import { withApollo, graphql, compose } from 'react-apollo';
 import { connect } from 'react-redux';
-import { Message, Container } from 'semantic-ui-react';
+import { Message, Container, Progress, Header, Segment } from 'semantic-ui-react';
 import gql from 'graphql-tag';
 import { FIGSHARE_AUTH_STATE_STORAGE_KEY } from '../../Config'
 import { loginAction } from '../../redux/user'
@@ -41,9 +40,15 @@ const Figshare = props => {
     const { social, token } = data.socialAuth
     const { id, username } = social.user
     props.onLogin(access_token, token, username, id)
+    props.history.push(`/dashboard`)
   })
 
-  return <Redirect to="/dashboard" />
+  return (<Container>
+    <Segment>
+      <Header content='Logging into Crux' />
+      <Progress percent={100} indicating />
+    </Segment>
+  </Container>)
 }
 
 const mapDispatchToProps = (dispatch) => (
