@@ -44,7 +44,8 @@ class CategorySearch extends Component {
         onResultSelect={this.handleResultsSelect(handleSelect)}
         onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
         results={results}
-        value={value}>
+        value={value}
+        icon=''>
       </Search>
     </div>)
   }
