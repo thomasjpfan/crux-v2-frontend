@@ -11,7 +11,7 @@ const DashboardPage = (props) => {
   let dashboardMessage
   if (props.loggedIn) {
     mainContent = (<DashboardDisplay />)
-    dashboardMessage = `My Dashboard`
+    dashboardMessage = `${props.username}'s Dashboard`
   } else {
     mainContent = (<NotLoggedInMessage />)
     dashboardMessage = 'Dashboard'
@@ -32,6 +32,7 @@ const DashboardPage = (props) => {
 const mapStateToProps = ({ user }) => {
   return {
     loggedIn: user.loggedIn,
+    username: user.username,
   }
 }
 
