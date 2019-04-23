@@ -5,9 +5,9 @@ import {
   Link,
 } from 'react-router-dom'
 import UserItem from './UserItem'
+import { connect } from 'react-redux'
 
 const NavBar = props => (
-
   <Menu stackable size='large' className="nav-bar">
     <Container>
       <Link to='/'>
@@ -19,8 +19,8 @@ const NavBar = props => (
       </Link>
       <Link to='/dashboard'>
         <Menu.Item>
-          Dashboard
-          </Menu.Item>
+          {props.loggedIn ? `${props.username}'s Dashboard` : 'Dashboard'}
+        </Menu.Item>
       </Link>
       <Link to='/datasets'>
         <Menu.Item>
@@ -37,4 +37,11 @@ const NavBar = props => (
   </Menu >
 )
 
-export default NavBar;
+const mapStateToProps = ({ user }) => (
+  {
+    username: user.username,
+    loggedIn: user.loggedIn
+  }
+)
+
+export default connect(mapStateToProps)(NavBar);
