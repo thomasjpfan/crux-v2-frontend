@@ -22,7 +22,7 @@ const DatasetsCardList = props => {
           loading={loading}
           activeMoreButton={datasets.pageInfo.hasNextPage}
           showMoreContent='Show More Datasets'
-          noDataContent='No Datasets'
+          noDataContent='Navigate to Datasets => New Dataset to create your own Dataset!'
           rooturi='/dataset'
           showMore={() => {
             if (!datasets.pageInfo.hasNextPage) {

@@ -24,7 +24,7 @@ const AnalysesCardList = props => {
           loading={loading}
           activeMoreButton={analyses.pageInfo.hasNextPage}
           showMoreContent='Show More Analyses'
-          noDataContent='No Analyses'
+          noDataContent='Navigate to Datasets to find a dataset to analyze'
           rooturi='/analysis'
           showMore={() => {
             if (!analyses.pageInfo.hasNextPage) {
