@@ -46,7 +46,6 @@ class SearchableDatasetCardList extends Component {
   }
 
   render() {
-    console.log(this.state.searchQuery)
     return (<Fragment>
       <Input icon='search' iconPosition='left' placeholder='Search for title...' fluid onChange={this.changeQuery} loading={this.state.loading} />
       <Divider hidden />

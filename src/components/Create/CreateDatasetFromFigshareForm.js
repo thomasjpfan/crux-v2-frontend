@@ -119,7 +119,7 @@ class CreateDatasetFromFigshareForm extends Component {
         <Form.TextArea label='Description' value={description} onChange={(e, { value }) => this.setState({ description: value })} rows={10} error={errorFormLabel
           === 'description'} />
         <CategorySearch
-          handleSelect={(result) => { console.log(result); this.setState({ tags: [...this.state.tags, result] }) }}
+          handleSelect={(result) => { this.setState({ tags: [...this.state.tags, result] }) }}
         />
         {tags.length > 0 &&
           <List>
