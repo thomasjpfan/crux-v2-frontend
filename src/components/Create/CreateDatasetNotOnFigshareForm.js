@@ -11,11 +11,11 @@ class CreateDatasetNotOnFigshareForm extends Component {
   fileInput = React.createRef()
 
   state = {
-    title: 'hello world',
+    title: '',
     licenseValue: 1,
-    description: 'this is cool',
-    tasks: ['do something cool'],
-    tags: [{ id: 1, title: "Biophysics" }],
+    description: '',
+    tasks: [],
+    tags: [],
 
 
     createStatus: '',
