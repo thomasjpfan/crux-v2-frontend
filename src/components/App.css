@@ -27,19 +27,24 @@
   margin-bottom: -0.5em;
 }
 
-.spaced > .label, .spaced > .button {
+.spaced > .label,
+.spaced > .button {
   margin-bottom: 0.5em;
 }
 
-.ui.fullscreen.webmodal, .ui.fullscreen.scrolling.webmodal {
-  left: auto!important;
+.ui.fullscreen.webmodal,
+.ui.fullscreen.scrolling.webmodal {
+  left: auto !important;
 }
 
 .ui.create-dataset-header-button {
   margin-left: 16px;
 }
 
-.ui.form input[type=file] {
+.ui.form input[type="file"] {
   margin-bottom: 10px;
 }
 
+.dataset-helper-label {
+  float: left;
+}
