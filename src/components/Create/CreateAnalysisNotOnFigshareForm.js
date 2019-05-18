@@ -377,7 +377,7 @@ class CreateAnalysisNotOnFigshareForm extends Component {
               <Divider hidden />
             </div>
           )}
-          <div class="field">
+          <div className="field">
             <label for="datasetFile">Choose an analysis to upload</label>
             <input
               type="file"
