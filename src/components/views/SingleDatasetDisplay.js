@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import ModalWebViewer from "./ModalWebViewer";
 import LoginFirstButton from "./LoginFirstButton";
+import { connect } from "react-redux";
 
 const SingleDatasetDisplay = props => {
   const tags = props.tags || [{ node: { id: "UNTAGGEDID", name: "Untagged" } }];
@@ -48,6 +49,13 @@ const SingleDatasetDisplay = props => {
               content="Create Analysis"
               to={`/createanalysis?datasetId=${props.datasetId}`}
             />
+            {props.loggedIn && (
+              <LoginFirstButton
+                secondary
+                content="Edit Dataset"
+                to={`/editdataset/${props.datasetId}`}
+              />
+            )}
           </Segment>
         </Segment.Group>
         {tasks.length > 0 && (
@@ -97,4 +105,9 @@ const SingleDatasetDisplay = props => {
   );
 };
 
-export default SingleDatasetDisplay;
+const mapStateToProps = ({ loggedIn, user }) => ({
+  cruxUID: user.cruxUID,
+  loggedIn: user.loggedIn
+});
+
+export default connect(mapStateToProps)(SingleDatasetDisplay);

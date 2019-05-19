@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Query } from "react-apollo";
 import { Loader, Message, Container } from "semantic-ui-react";
-import SingleDatasetDisplay from "./views/SingleDatasetDisplay";
+import EditDatasetForm from "./Edit/EditDatasetForm";
 import gql from "graphql-tag";
 import { DATASET_FRAGMENT } from "./fragments";
 
@@ -15,7 +15,7 @@ const GET_SINGLE_DATASET = gql`
   ${DATASET_FRAGMENT}
 `;
 
-const SingleDataset = props => {
+const EditSingleDataset = props => {
   const {
     params: { datasetId }
   } = props.match;
@@ -41,23 +41,11 @@ const SingleDataset = props => {
           }
 
           const { dataset } = data;
-          return (
-            <SingleDatasetDisplay
-              datasetId={datasetId}
-              title={dataset.name}
-              tasks={dataset.taskSet.edges}
-              createdById={dataset.createdBy.id}
-              description={dataset.description}
-              analyses={dataset.analysisSet.edges}
-              figshareId={dataset.figshareId}
-              tags={dataset.tags.edges}
-            />
-          );
+          return <EditDatasetForm dataset={dataset} />;
         }}
       </Query>
     </Fragment>
   );
 };
 
-export { GET_SINGLE_DATASET };
-export default SingleDataset;
+export default EditSingleDataset;

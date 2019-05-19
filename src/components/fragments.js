@@ -7,6 +7,7 @@ const DATASET_FRAGMENT = gql`
     description
     figshareId
     createdBy {
+      id
       username
     }
     analysisSet {
@@ -47,6 +48,7 @@ const ANALYSIS_FRAGMENT = gql`
     description
     figshareId
     createdBy {
+      id
       username
     }
     task {
