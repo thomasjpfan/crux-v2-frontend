@@ -93,7 +93,7 @@ class EditDatasetForm extends Component {
       <>
         <MainHeader>
           <Container>
-            <Header as="h1" content={`Edit: ${name}`} />
+            <Header as="h1" content={`Update Dataset: ${name}`} />
           </Container>
         </MainHeader>
         <Container>
@@ -118,6 +118,7 @@ class EditDatasetForm extends Component {
                   this.setState({ description: value })
                 }
                 value={description}
+                rows={16}
                 error={formErrorLabel === "description"}
               />
               <Form.Input
@@ -155,7 +156,7 @@ class EditDatasetForm extends Component {
               </EditDatasetOnCrux>
               <Message
                 error
-                header="Unable to Edit Dataset"
+                header="Unable to Update Dataset"
                 content={formErrorMessage}
               />
             </Form>

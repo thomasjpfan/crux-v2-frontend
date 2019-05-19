@@ -8,6 +8,7 @@ import HomePage from "./HomePage";
 import DashboardPage from "./DashboardPage";
 import SingleDatasetPage from "./SingleDatasetPage";
 import EditDatasetPage from "./EditDatasetPage";
+import EditAnalysisPage from "./EditAnalysisPage";
 import SingleAnalysisPage from "./SingleAnalysisPage";
 import CreateNewDatasetPage from "./CreateNewDatasetPage";
 import CreateNewAnalysisPage from "./CreateNewAnalysisPage";
@@ -25,6 +26,10 @@ class App extends Component {
           <Route path="/createdataset" component={CreateNewDatasetPage} />
           <Route path="/createanalysis" component={CreateNewAnalysisPage} />
           <Route path="/editdataset/:datasetId" component={EditDatasetPage} />
+          <Route
+            path="/editanalysis/:analysisId"
+            component={EditAnalysisPage}
+          />
           <Route path="/dataset/:datasetId" component={SingleDatasetPage} />
           <Route path="/analysis/:analysisId" component={SingleAnalysisPage} />
           <Route exact path="/" component={HomePage} />

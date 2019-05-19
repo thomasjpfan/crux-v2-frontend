@@ -52,7 +52,7 @@ const SingleDatasetDisplay = props => {
             {props.loggedIn && (
               <LoginFirstButton
                 secondary
-                content="Edit Dataset"
+                content="Update Dataset"
                 to={`/editdataset/${props.datasetId}`}
               />
             )}
@@ -105,7 +105,7 @@ const SingleDatasetDisplay = props => {
   );
 };
 
-const mapStateToProps = ({ loggedIn, user }) => ({
+const mapStateToProps = ({ user }) => ({
   cruxUID: user.cruxUID,
   loggedIn: user.loggedIn
 });

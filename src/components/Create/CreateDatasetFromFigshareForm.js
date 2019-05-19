@@ -142,7 +142,7 @@ class CreateDatasetFromFigshareForm extends Component {
           label="Description"
           value={description}
           onChange={(e, { value }) => this.setState({ description: value })}
-          rows={10}
+          rows={16}
           error={errorFormLabel === "description"}
         />
         <CategorySearch

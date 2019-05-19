@@ -3,6 +3,8 @@ import MainHeader from "./MainHeader";
 import ModalWebViewer from "./ModalWebViewer";
 import { Header, Container, Label, Segment } from "semantic-ui-react";
 import LinkButton from "./LinkButton";
+import LoginFirstButton from "./LoginFirstButton";
+import { connect } from "react-redux";
 
 const SingleAnalysisDisplay = props => {
   const tags = props.tags || [{ node: { id: "UNTAGGEDID", name: "Untagged" } }];
@@ -24,7 +26,6 @@ const SingleAnalysisDisplay = props => {
         <Segment.Group>
           <Segment>
             <Header as="h2">Analysis Description</Header>
-            <Label size="large" content={`Task: ${task.name}`} />
           </Segment>
           <Segment size="large">
             <p>{props.description}</p>
@@ -42,9 +43,19 @@ const SingleAnalysisDisplay = props => {
                 props.dataset.figshareId
               }/embed`}
             />
+            {props.loggedIn && (
+              <LoginFirstButton
+                secondary
+                content="Update Analysis"
+                to={`/editanalysis/${props.id}`}
+              />
+            )}
           </Segment>
           <Segment size="large">
             <Header as="h2" content={props.dataset.name} />
+            <Label size="large" content={`Task: ${task.name}`} />
+          </Segment>
+          <Segment size="large">
             <p>{props.dataset.description}</p>
             <LinkButton
               to={`/dataset/${props.dataset.id}`}
@@ -58,4 +69,8 @@ const SingleAnalysisDisplay = props => {
   );
 };
 
-export default SingleAnalysisDisplay;
+const mapStateToProps = ({ user }) => ({
+  loggedIn: user.loggedIn
+});
+
+export default connect(mapStateToProps)(SingleAnalysisDisplay);
