@@ -120,7 +120,7 @@ class CreateAnalysisNotOnFigshareForm extends Component {
             description: description,
             keywords: keywords,
             license: 3,
-            defined_type: "code",
+            defined_type: "software",
             categories: tagIds
           }),
           headers: authHeader
