@@ -1,17 +1,23 @@
-import React, { Fragment, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { compose, withApollo, Query } from 'react-apollo'
-import MainHeader from './views/MainHeader'
-import { Header, Container, Message, Loader, Segment, Label } from 'semantic-ui-react'
-import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import NotLoggedInMessage from './views/NotLoggedInMessage'
-import gql from 'graphql-tag'
-import AlreadyOnFigshare from './Create/AlreadyOnFigshare'
-import CreateAnalysisNotOnFigshareForm from './Create/CreateAnalysisNotOnFigshareForm'
-import CreateAnalysisFromFigshare from './Create/CreateAnalysisFromFigshare'
-import categories from './Categories'
-
+import React, { Fragment, useState } from "react";
+import { Link } from "react-router-dom";
+import { compose, withApollo, Query } from "react-apollo";
+import MainHeader from "./views/MainHeader";
+import {
+  Header,
+  Container,
+  Message,
+  Loader,
+  Segment,
+  Label
+} from "semantic-ui-react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import NotLoggedInMessage from "./views/NotLoggedInMessage";
+import gql from "graphql-tag";
+import AlreadyOnFigshare from "./Create/AlreadyOnFigshare";
+import CreateAnalysisNotOnFigshareForm from "./Create/CreateAnalysisNotOnFigshareForm";
+import CreateAnalysisFromFigshare from "./Create/CreateAnalysisFromFigshare";
+import categories from "./Categories";
 
 const GET_SINGLE_DATASET_QUICK = gql`
   query singleDatasetInfo($id: ID!, $taskId: ID!, $includeTask: Boolean!) {
@@ -41,16 +47,18 @@ const GET_SINGLE_DATASET_QUICK = gql`
       name
     }
   }
-`
+`;
 
 const CreateNewAnalysisPage = props => {
-  const [onFigshare, setOnFigshare] = useState(false)
+  const [onFigshare, setOnFigshare] = useState(false);
 
-  const headerElm = (<MainHeader>
-    <Container>
-      <Header as='h1' content='Create New Analysis' />
-    </Container>
-  </MainHeader>)
+  const headerElm = (
+    <MainHeader>
+      <Container>
+        <Header as="h1" content="Create New Analysis" />
+      </Container>
+    </MainHeader>
+  );
 
   if (!props.loggedIn) {
     return (
@@ -59,12 +67,13 @@ const CreateNewAnalysisPage = props => {
         <Container>
           <NotLoggedInMessage />
         </Container>
-      </Fragment>)
+      </Fragment>
+    );
   }
 
-  const urlQuery = new URLSearchParams(props.location.search)
-  const datasetId = urlQuery.get('datasetId')
-  const taskId = urlQuery.get('taskId') || ""
+  const urlQuery = new URLSearchParams(props.location.search);
+  const datasetId = urlQuery.get("datasetId");
+  const taskId = urlQuery.get("taskId") || "";
 
   if (datasetId === "") {
     return (
@@ -73,72 +82,97 @@ const CreateNewAnalysisPage = props => {
         <Container>
           <Message
             warning
-            header='Invalid dataset. Navigate to the dataset and try again'
+            header="Invalid dataset. Navigate to the dataset and try again"
           />
         </Container>
       </Fragment>
-    )
+    );
   }
 
-
-  const includeTask = taskId !== ""
+  const includeTask = taskId !== "";
   return (
     <Fragment>
       {headerElm}
       <Container>
-        <Query query={GET_SINGLE_DATASET_QUICK} variables={{ id: datasetId, includeTask: includeTask, taskId: taskId }}>
+        <Query
+          query={GET_SINGLE_DATASET_QUICK}
+          variables={{
+            id: datasetId,
+            includeTask: includeTask,
+            taskId: taskId
+          }}
+        >
           {({ data, loading, error }) => {
             if (loading) {
-              return <Loader active inline='centered' />
+              return <Loader active inline="centered" />;
             }
             if (error) {
-              return <Message negative header="Error loading dataset information" />
+              return (
+                <Message negative header="Error loading dataset information" />
+              );
             }
 
-            const { dataset, task } = data
-            let taskMessage
+            const { dataset, task } = data;
+            let taskMessage;
             if (task) {
-              taskMessage = `Task: ${task.name}`
+              taskMessage = `Task: ${task.name}`;
             } else {
-              taskMessage = `No task selected`
+              taskMessage = `No task selected`;
             }
-            let createAnalysisForm
+            let createAnalysisForm;
             if (onFigshare) {
-              createAnalysisForm = (<CreateAnalysisFromFigshare dataset={dataset} task={task} />)
+              createAnalysisForm = (
+                <CreateAnalysisFromFigshare dataset={dataset} task={task} />
+              );
             } else {
-              const tags = dataset.tags.edges.map(({ node: { name } }) => name)
-              let dataSetTags = categories.filter(({ title }) => tags.includes(title))
-              createAnalysisForm = (<CreateAnalysisNotOnFigshareForm dataset={dataset} task={task} defaultTags={dataSetTags} />)
+              const tags = dataset.tags.edges.map(({ node: { name } }) => name);
+              let dataSetTags = categories.filter(({ title }) =>
+                tags.includes(title)
+              );
+              createAnalysisForm = (
+                <CreateAnalysisNotOnFigshareForm
+                  dataset={dataset}
+                  task={task}
+                  defaultTags={dataSetTags}
+                />
+              );
             }
             return (
               <Segment.Group>
                 <Segment>
-                  <Header as='h2' content={dataset.name} subheader={taskMessage} />
+                  <Header as="h2" content={dataset.name} />
+                  <Label
+                    size="large"
+                    content={taskMessage}
+                    style={{ "margin-right": "16px" }}
+                  />
                   <Link to={`/dataset/${dataset.id}`}>
-                    <Label color='black' size='large' content="View Dataset" />
+                    <Label color="black" size="large" content="View Dataset" />
                   </Link>
                 </Segment>
                 <AlreadyOnFigshare
-                  title='Analysis already on FigShare?'
+                  title="Analysis already on FigShare?"
                   yesPrimary={onFigshare}
                   onNo={() => setOnFigshare(false)}
                   onYes={() => setOnFigshare(true)}
                 />
                 {createAnalysisForm}
               </Segment.Group>
-            )
+            );
           }}
         </Query>
       </Container>
     </Fragment>
-  )
-}
+  );
+};
 
-const mapStateToProps = ({ user }) => (
-  {
-    loggedIn: user.loggedIn,
-  }
-)
+const mapStateToProps = ({ user }) => ({
+  loggedIn: user.loggedIn
+});
 
 export default connect(mapStateToProps)(
-  compose(withRouter, withApollo)(CreateNewAnalysisPage))
+  compose(
+    withRouter,
+    withApollo
+  )(CreateNewAnalysisPage)
+);
