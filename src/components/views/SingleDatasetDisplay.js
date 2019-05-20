@@ -36,7 +36,7 @@ const SingleDatasetDisplay = props => {
             <Header as="h2" content="Description" />
           </Segment>
           <Segment size="large" className="spaced">
-            <p>{props.description}</p>
+            <p className="description">{props.description}</p>
             <ModalWebViewer
               buttonProps={{ secondary: true, content: "View Data" }}
               title={props.title}

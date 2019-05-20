@@ -28,7 +28,7 @@ const SingleAnalysisDisplay = props => {
             <Header as="h2">Analysis Description</Header>
           </Segment>
           <Segment size="large">
-            <p>{props.description}</p>
+            <p className="description">{props.description}</p>
             <ModalWebViewer
               buttonProps={{ secondary: true, content: "View Analysis" }}
               title={props.title}
@@ -56,7 +56,7 @@ const SingleAnalysisDisplay = props => {
             <Label size="large" content={`Task: ${task.name}`} />
           </Segment>
           <Segment size="large">
-            <p>{props.dataset.description}</p>
+            <p className="description">{props.dataset.description}</p>
             <LinkButton
               to={`/dataset/${props.dataset.id}`}
               secondary

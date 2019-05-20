@@ -48,3 +48,7 @@
 .dataset-helper-label {
   float: left;
 }
+
+.description {
+  white-space: pre-line;
+}
